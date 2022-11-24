@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -30,10 +31,31 @@ interface RouterState {
   name: string;
 }
 const Coin = () => {
-  const { coinId } = useParams<Params>();
+  const { coinId } = useParams<Params>(); // url에서 가져오는거
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const { state } = useLocation<RouterState>();
+  // const location = useLocation();
+  const { state } = useLocation<RouterState>(); // link로 보낸 데이터 가져오는거
+
+  const [info, setInfo] = useState({});
+  const [priceInfo, setPriceInfo] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+      .then((res) => {
+        setInfo(res);
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+    axios
+      .get(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+      .then((res) => {
+        setPriceInfo(res);
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+    setLoading(false);
+  }, []);
   return (
     <Container>
       <Header>
