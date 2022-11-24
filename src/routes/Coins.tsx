@@ -13,20 +13,27 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
 `;
-const CoinList = styled.ul``;
+const CoinList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const Coin = styled.li`
   background-color: ${(props) => props.theme.textColor};
   color: ${(props) => props.theme.bgColor};
   margin: 20px;
   border-radius: 15px;
+  width: 450px;
   a {
-    display: block;
+    display: flex;
     color: ${(props) => props.theme.bgColor};
     text-decoration: none;
     font-weight: 700;
     font-size: 1.3em;
     width: 100%;
     padding: 20px;
+    flex-direction: row;
+    align-items: center;
   }
   &:hover {
     a {
@@ -36,7 +43,7 @@ const Coin = styled.li`
   }
 `;
 const Title = styled.h1`
-  color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.accentColor};
   font-size: 40px;
   padding: 0px 20px;
 `;
@@ -54,6 +61,13 @@ interface CoinInterface {
   is_active: boolean;
   type: string;
 }
+
+const Img = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+`;
+
 const Coins = () => {
   const [coins, setCoins] = useState<CoinInterface[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,7 +94,17 @@ const Coins = () => {
         <CoinList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/:${coin.id}`}>{coin.id} &rarr;</Link>
+              <Link
+                to={{
+                  pathname: `/:${coin.id}`,
+                  state: { name: coin.name },
+                }}
+              >
+                <Img
+                  src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
+                />
+                {coin.id} &rarr;
+              </Link>
             </Coin>
           ))}
         </CoinList>
