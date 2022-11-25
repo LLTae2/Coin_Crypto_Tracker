@@ -76,7 +76,7 @@ const Coins = () => {
       .get("https://api.coinpaprika.com/v1/coins")
       .then((res) => {
         setCoins(res.data.slice(0, 100));
-        console.log(res.data.slice(0, 100));
+        // console.log(res.data.slice(0, 100));
         setLoading(false);
       })
       .catch((err) => {
