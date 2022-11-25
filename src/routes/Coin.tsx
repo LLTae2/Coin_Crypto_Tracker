@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Switch, useLocation, useParams, Route } from "react-router-dom";
 import styled from "styled-components";
+import Chart from "./Chart";
+import Price from "./Price";
 
 interface Params {
   coinId: string;
@@ -27,6 +29,40 @@ const Loading = styled.span`
   text-align: center;
   font-size: 30px;
 `;
+const Overview = styled.div`
+  width: 450px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+const OverviewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  span:first-child {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+`;
+const Description = styled.p`
+  margin: 20px 0px;
+  width: 450px;
+  text-align: center;
+`;
+const ContentBox = styled.div`
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+`;
+
 interface RouterState {
   name: string;
 }
@@ -123,9 +159,49 @@ const Coin = () => {
   return (
     <Container>
       <Header>
-        <Title>{state?.name || "Loading..."}</Title>
+        <Title>
+          {state?.name ? state.name : loading ? "loading..." : info?.name}
+        </Title>
       </Header>
-      {loading ? <Loading>loading...</Loading> : null}
+      {loading ? (
+        <Loading>loading...</Loading>
+      ) : (
+        <ContentBox>
+          <Overview>
+            <OverviewItem>
+              <span>Rank:</span>
+              <span>{info?.rank}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Symbol:</span>
+              <span>${info?.symbol}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Open Source:</span>
+              <span>{info?.open_source ? "Yes" : "No"}</span>
+            </OverviewItem>
+          </Overview>
+          <Description>{info?.description}</Description>
+          <Overview>
+            <OverviewItem>
+              <span>Total Suply:</span>
+              <span>{priceInfo?.total_supply}</span>
+            </OverviewItem>
+            <OverviewItem>
+              <span>Max Supply:</span>
+              <span>{priceInfo?.max_supply}</span>
+            </OverviewItem>
+          </Overview>
+          <Switch>
+            <Route path={`/${coinId}/price`}>
+              <Price></Price>
+            </Route>
+            <Route path={`/${coinId}/chart`}>
+              <Chart></Chart>
+            </Route>
+          </Switch>
+        </ContentBox>
+      )}
     </Container>
   );
 };
