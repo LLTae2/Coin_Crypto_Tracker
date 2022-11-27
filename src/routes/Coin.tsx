@@ -1,6 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Switch, useLocation, useParams, Route } from "react-router-dom";
+import {
+  Switch,
+  useLocation,
+  useParams,
+  Route,
+  Link,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 import Chart from "./Chart";
 import Price from "./Price";
@@ -61,6 +68,31 @@ const ContentBox = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+`;
+const Tabs = styled.div`
+  width: 490px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin: 25px 0px;
+  gap: 10px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  width: 240px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  border-radius: 10px;
+
+  a {
+    display: block;
+    text-decoration: none;
+    color: ${(props) =>
+      props.isActive ? props.theme.accentColor : props.theme.textColor};
+  }
 `;
 
 interface RouterState {
@@ -131,6 +163,8 @@ interface PriceData {
 }
 
 const Coin = () => {
+  const priceMatch = useRouteMatch("/:coinId/price");
+  const chartMatch = useRouteMatch("/:coinId/chart");
   const { coinId } = useParams<Params>(); // url에서 가져오는거
   const [loading, setLoading] = useState(true);
   // const location = useLocation();
@@ -192,6 +226,14 @@ const Coin = () => {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
+          <Tabs>
+            <Tab isActive={priceMatch != null}>
+              <Link to={`/${coinId}/price`}>price</Link>
+            </Tab>
+            <Tab isActive={chartMatch != null}>
+              <Link to={`/${coinId}/chart`}>chart</Link>
+            </Tab>
+          </Tabs>
           <Switch>
             <Route path={`/${coinId}/price`}>
               <Price></Price>
