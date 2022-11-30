@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import {
   Switch,
   useLocation,
@@ -9,6 +10,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "./api";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -166,35 +168,45 @@ const Coin = () => {
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { coinId } = useParams<Params>(); // url에서 가져오는거
-  const [loading, setLoading] = useState(true);
   // const location = useLocation();
   const { state } = useLocation<RouterState>(); // link로 보낸 데이터 가져오는거
 
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
+  // const [info, setInfo] = useState<InfoData>();
+  // const [priceInfo, setPriceInfo] = useState<PriceData>();
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    axios
-      .get(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      .then((res) => {
-        setInfo(res.data);
-        console.log(info);
-      })
-      .catch((err) => console.log(err));
-    axios
-      .get(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      .then((res) => {
-        setPriceInfo(res.data);
-        console.log(priceInfo);
-      })
-      .catch((err) => console.log(err));
-    setLoading(false);
-  }, []);
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId!)
+  );
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
+    ["tickers", coinId],
+    () => fetchCoinTickers(coinId!)
+  );
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     .then((res) => {
+  //       setInfo(res.data);
+  //       console.log(info);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   axios
+  //     .get(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     .then((res) => {
+  //       setPriceInfo(res.data);
+  //       console.log(priceInfo);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   setLoading(false);
+  // }, []);
+  const loading = infoLoading || tickersLoading;
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "loading..." : info?.name}
+          {state?.name ? state.name : loading ? "loading..." : infoData?.name}
         </Title>
       </Header>
       {loading ? (
@@ -204,26 +216,26 @@ const Coin = () => {
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${info?.symbol}</span>
+              <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
