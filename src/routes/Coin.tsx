@@ -40,6 +40,7 @@ const Loading = styled.span`
 `;
 const Overview = styled.div`
   width: 450px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -65,8 +66,6 @@ const Description = styled.p`
 `;
 const ContentBox = styled.div`
   width: 450px;
-  min-width: 400px;
-  min-height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;

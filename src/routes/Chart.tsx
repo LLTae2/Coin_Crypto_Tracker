@@ -26,6 +26,8 @@ function Chart({ coinId }: ChartProps) {
         "Loading Chart..."
       ) : (
         <ApexChart
+          width={500}
+          height={300}
           type="line"
           options={{
             theme: {
@@ -33,8 +35,6 @@ function Chart({ coinId }: ChartProps) {
             },
             chart: {
               background: "transparent",
-              width: "100%",
-              height: 400,
             },
             stroke: {
               curve: "smooth",
