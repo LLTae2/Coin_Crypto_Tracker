@@ -185,7 +185,7 @@ const Coin = () => {
     ["tickers", coinId],
     () => fetchCoinTickers(coinId!),
     {
-      refetchInterval: 5000,
+      refetchInterval: 2000,
     }
   );
 
@@ -249,19 +249,19 @@ const Coin = () => {
             </OverviewItem>
           </Overview>
           <Tabs>
-            <Tab isActive={priceMatch != null}>
-              <Link to={`/${coinId}/price`}>price</Link>
-            </Tab>
             <Tab isActive={chartMatch != null}>
               <Link to={`/${coinId}/chart`}>chart</Link>
             </Tab>
+            <Tab isActive={priceMatch != null}>
+              <Link to={`/${coinId}/price`}>price</Link>
+            </Tab>
           </Tabs>
           <Switch>
-            <Route path={`/${coinId}/price`}>
-              <Price></Price>
-            </Route>
             <Route path={`/${coinId}/chart`}>
               <Chart coinId={coinId}></Chart>
+            </Route>
+            <Route path={`/${coinId}/price`}>
+              <Price></Price>
             </Route>
           </Switch>
         </ContentBox>

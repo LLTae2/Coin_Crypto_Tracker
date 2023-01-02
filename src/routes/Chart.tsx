@@ -17,12 +17,8 @@ interface IHistorical {
 }
 
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IHistorical[]>(
-    ["ohlcv", coinId],
-    () => fetchCoinHistory(coinId),
-    {
-      refetchInterval: 1000,
-    }
+  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+    fetchCoinHistory(coinId)
   );
   return (
     <div>
@@ -32,22 +28,16 @@ function Chart({ coinId }: ChartProps) {
         <ApexChart
           width={500}
           height={300}
-          type="line"
+          type="candlestick"
           options={{
             theme: {
               mode: "dark",
             },
             chart: {
+              type: "candlestick",
               background: "transparent",
             },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
             grid: {
-              show: false,
-            },
-            yaxis: {
               show: false,
             },
             xaxis: {
@@ -58,34 +48,51 @@ function Chart({ coinId }: ChartProps) {
               axisTicks: {
                 show: false,
               },
-              axisBorder: {
-                show: false,
-              },
-              categories: data?.map((price) =>
-                new Date(parseInt(price.time_close) * 1000).toISOString()
-              ),
             },
-
-            fill: {
-              type: "gradient",
-              gradient: {
-                gradientToColors: ["#0be881"],
-                stops: [0, 100],
+            yaxis: {
+              show: false,
+            },
+            plotOptions: {
+              candlestick: {
+                colors: {
+                  upward: "#0be881",
+                  downward: "#ff3434",
+                },
               },
             },
-            colors: ["#0fbcf9"],
+            // fill: {
+            //   type: "gradient",
+            //   gradient: {
+            //     gradientToColors: ["#0be881"],
+            //     stops: [0, 100],
+            //   },
+            // },
+            // colors: ["#0fbcf9"],
             tooltip: {
               y: {
                 formatter: (value) => `$ ${value.toFixed(3)}`,
               },
             },
           }}
-          series={[
-            {
-              name: "hello",
-              data: data?.map((price) => price.close) as number[],
-            },
-          ]}
+          series={
+            [
+              {
+                data: data?.map((price) => {
+                  return {
+                    x: new Date(
+                      parseInt(price.time_close) * 1000
+                    ).toISOString(),
+                    y: [
+                      Number(price.open).toFixed(2),
+                      Number(price.high).toFixed(2),
+                      Number(price.low).toFixed(2),
+                      Number(price.close).toFixed(2),
+                    ],
+                  };
+                }),
+              },
+            ] as any
+          }
         />
       )}
     </div>
