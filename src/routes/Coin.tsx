@@ -14,6 +14,7 @@ import { fetchCoinInfo, fetchCoinTickers } from "./api";
 import Chart from "./Chart";
 import Price from "./Price";
 import { Helmet } from "react-helmet";
+import { AiFillHome } from "react-icons/ai";
 
 interface Params {
   coinId: string;
@@ -28,6 +29,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;
 const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
@@ -97,6 +99,11 @@ const Tab = styled.span<{ isActive: boolean }>`
     color: ${(props) =>
       props.isActive ? props.theme.accentColor : props.theme.textColor};
   }
+`;
+const HomeIcon = styled.div`
+  position: absolute;
+  top: 40%;
+  left: 3%;
 `;
 
 interface RouterState {
@@ -215,6 +222,11 @@ const Coin = () => {
         </title>
       </Helmet>
       <Header>
+        <HomeIcon>
+          <Link to={"/"}>
+            <AiFillHome color="white" size={30} />
+          </Link>
+        </HomeIcon>
         <Title>
           {state?.name ? state.name : loading ? "loading..." : infoData?.name}
         </Title>
