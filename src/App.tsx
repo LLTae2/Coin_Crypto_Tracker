@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { Reset } from "styled-reset";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { darkTheme, lightTheme } from "./theme";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -57,11 +58,18 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+  const toggleTheme = () => {
+    setIsDark((current) => !current);
+  };
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <button onClick={toggleTheme}>Toggle Theme</button>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }
