@@ -65,6 +65,8 @@ const Description = styled.p`
 `;
 const ContentBox = styled.div`
   width: 450px;
+  min-width: 400px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
