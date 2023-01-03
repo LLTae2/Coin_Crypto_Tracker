@@ -1,6 +1,3 @@
-import axios from "axios";
-import React from "react";
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
   Switch,
@@ -19,6 +16,7 @@ import { AiFillHome } from "react-icons/ai";
 import { isDarkAtom } from "../atom";
 import { useRecoilValue } from "recoil";
 import ToggleMode from "../ToggleMode";
+// import ToggleMode from "../ToggleMode";
 
 interface Params {
   coinId: string;
@@ -126,12 +124,12 @@ interface RouterState {
   name: string;
 }
 
-interface ITag {
-  coin_counter: number;
-  ico_counter: number;
-  id: string;
-  name: string;
-}
+// interface ITag {
+//   coin_counter: number;
+//   ico_counter: number;
+//   id: string;
+//   name: string;
+// }
 
 interface InfoData {
   id: string;

@@ -51,7 +51,7 @@ function Chart({ coinId }: ChartProps) {
               },
               chart: {
                 type: "candlestick",
-                // background: isDark ? "whitesmoke" : "#333",
+                background: "transparent",
               },
               grid: {
                 show: false,
