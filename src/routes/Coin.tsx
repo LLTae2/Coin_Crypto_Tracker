@@ -1,4 +1,5 @@
 import axios from "axios";
+import React from "react";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
@@ -17,6 +18,7 @@ import { Helmet } from "react-helmet";
 import { AiFillHome } from "react-icons/ai";
 import { isDarkAtom } from "../atom";
 import { useRecoilValue } from "recoil";
+import ToggleMode from "../ToggleMode";
 
 interface Params {
   coinId: string;
@@ -31,7 +33,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 `;
 const Title = styled.h1`
   color: ${(props) => props.theme.textColor};
@@ -116,7 +118,7 @@ const HomeIcon = styled.div`
   justify-content: center;
   background-color: ${(props) => props.theme.textColor};
   position: absolute;
-  top: 130%;
+  top: 15%;
   left: 3%;
 `;
 
@@ -237,6 +239,7 @@ const Coin = () => {
         </title>
       </Helmet>
       <Header>
+        <ToggleMode></ToggleMode>
         <HomeIcon>
           <Link to={"/"}>
             <AiFillHome color={isDark ? "black" : "white"} size={30} />

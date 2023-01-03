@@ -3,6 +3,7 @@ import { fetchCoinHistory } from "./api";
 import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atom";
+import styled from "styled-components";
 
 interface ChartProps {
   coinId: string;
@@ -17,6 +18,16 @@ interface IHistorical {
   volume: number;
   market_cap: number;
 }
+interface IBorderBox {
+  isDark: boolean;
+}
+
+const BorderBox = styled.div<IBorderBox>`
+  width: 490px;
+  height: 300px;
+  border-radius: 20px;
+  border: 2px solid ${(props) => (props.isDark ? "whitesmoke" : "#333")};
+`;
 
 function Chart({ coinId }: ChartProps) {
   const isDark = useRecoilValue(isDarkAtom);
@@ -29,75 +40,77 @@ function Chart({ coinId }: ChartProps) {
       {isLoading ? (
         "Loading Chart..."
       ) : (
-        <ApexChart
-          width={500}
-          height={300}
-          type="candlestick"
-          options={{
-            theme: {
-              mode: isDark ? "light" : "dark",
-            },
-            chart: {
-              type: "candlestick",
-              background: "transparent",
-            },
-            grid: {
-              show: false,
-            },
-            xaxis: {
-              type: "datetime",
-              labels: {
+        <BorderBox isDark={isDark}>
+          <ApexChart
+            width={480}
+            height={300}
+            type="candlestick"
+            options={{
+              theme: {
+                mode: isDark ? "light" : "dark",
+              },
+              chart: {
+                type: "candlestick",
+                // background: isDark ? "whitesmoke" : "#333",
+              },
+              grid: {
                 show: false,
               },
-              axisTicks: {
-                show: false,
-              },
-            },
-            yaxis: {
-              show: false,
-            },
-            plotOptions: {
-              candlestick: {
-                colors: {
-                  upward: "#0be881",
-                  downward: "#ff3434",
+              xaxis: {
+                type: "datetime",
+                labels: {
+                  show: false,
+                },
+                axisTicks: {
+                  show: false,
                 },
               },
-            },
-            // fill: {
-            //   type: "gradient",
-            //   gradient: {
-            //     gradientToColors: ["#0be881"],
-            //     stops: [0, 100],
-            //   },
-            // },
-            // colors: ["#0fbcf9"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$ ${value.toFixed(3)}`,
+              yaxis: {
+                show: false,
               },
-            },
-          }}
-          series={
-            [
-              {
-                data: data?.map((price) => {
-                  return {
-                    x: new Date(
-                      parseInt(price.time_close) * 1000
-                    ).toISOString(),
-                    y: [
-                      Number(price.open).toFixed(2),
-                      Number(price.high).toFixed(2),
-                      Number(price.low).toFixed(2),
-                      Number(price.close).toFixed(2),
-                    ],
-                  };
-                }),
+              plotOptions: {
+                candlestick: {
+                  colors: {
+                    upward: "#0be881",
+                    downward: "#ff3434",
+                  },
+                },
               },
-            ] as any
-          }
-        />
+              // fill: {
+              //   type: "gradient",
+              //   gradient: {
+              //     gradientToColors: ["#0be881"],
+              //     stops: [0, 100],
+              //   },
+              // },
+              // colors: ["#0fbcf9"],
+              tooltip: {
+                y: {
+                  formatter: (value) => `$ ${value.toFixed(3)}`,
+                },
+              },
+            }}
+            series={
+              [
+                {
+                  data: data?.map((price) => {
+                    return {
+                      x: new Date(
+                        parseInt(price.time_close) * 1000
+                      ).toISOString(),
+                      y: [
+                        Number(price.open).toFixed(2),
+                        Number(price.high).toFixed(2),
+                        Number(price.low).toFixed(2),
+                        Number(price.close).toFixed(2),
+                      ],
+                    };
+                  }),
+                },
+              ] as any
+            }
+          />
+        </BorderBox>
       )}
     </div>
   );

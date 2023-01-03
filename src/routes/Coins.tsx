@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import { IconBaseProps } from "react-icons/lib";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atom";
+import ToggleMode from "../ToggleMode";
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.bgColor};
@@ -84,6 +85,7 @@ const Coins = ({}: ICoinsProps) => {
         <title>코인</title>
       </Helmet>
       <Header>
+        <ToggleMode></ToggleMode>
         <Title>코인</Title>
       </Header>
       {isLoading ? (

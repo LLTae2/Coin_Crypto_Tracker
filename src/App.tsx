@@ -6,8 +6,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { darkTheme, lightTheme } from "./theme";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "./atom";
-import { BsMoonStarsFill } from "react-icons/bs";
-import { FaSun } from "react-icons/fa";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -60,36 +58,13 @@ const GlobalStyle = createGlobalStyle`
     border-spacing: 0;
   }
 `;
-const ToggleButton = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${(props) => props.theme.textColor};
-  position: absolute;
-  top: 5%;
-  left: 3%;
-`;
 
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
-  const setMode = useSetRecoilState(isDarkAtom);
-  const toggleMode = () => {
-    setMode((prev) => !prev);
-  };
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         {/* <button onClick={toggleTheme}>Toggle Theme</button> */}
-        <ToggleButton onClick={toggleMode}>
-          {isDark ? (
-            <FaSun size={40} color="black" />
-          ) : (
-            <BsMoonStarsFill size={30} color="white" />
-          )}
-        </ToggleButton>
         <GlobalStyle />
         <Router />
         <ReactQueryDevtools initialIsOpen={true} />
