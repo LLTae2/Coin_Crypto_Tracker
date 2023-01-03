@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "./api";
 import { Helmet } from "react-helmet";
+import { IconBaseProps } from "react-icons/lib";
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.bgColor};
@@ -64,6 +65,9 @@ interface CoinInterface {
   is_active: boolean;
   type: string;
 }
+interface ICoinsProps {
+  toggleTheme: () => void;
+}
 
 const Img = styled.img`
   width: 40px;
@@ -71,7 +75,7 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
-const Coins = () => {
+const Coins = ({ toggleTheme }: ICoinsProps) => {
   const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoins);
   // const [coins, setCoins] = useState<CoinInterface[]>([]);
   // const [loading, setLoading] = useState(true);
