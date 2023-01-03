@@ -65,9 +65,7 @@ interface CoinInterface {
   is_active: boolean;
   type: string;
 }
-interface ICoinsProps {
-  toggleTheme: () => void;
-}
+interface ICoinsProps {}
 
 const Img = styled.img`
   width: 40px;
@@ -75,7 +73,7 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
-const Coins = ({ toggleTheme }: ICoinsProps) => {
+const Coins = ({}: ICoinsProps) => {
   const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoins);
   // const [coins, setCoins] = useState<CoinInterface[]>([]);
   // const [loading, setLoading] = useState(true);
