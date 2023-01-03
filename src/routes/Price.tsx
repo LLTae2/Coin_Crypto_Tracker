@@ -50,7 +50,7 @@ const ContentBox = styled.div`
   width: 240px;
   height: 100px;
   border-radius: 15px;
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.textColor};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,7 +60,9 @@ const Percent = styled.p<{ isUp: boolean }>`
   font-size: 40px;
   color: ${(props) => (props.isUp ? "#0be881" : "#ff3434")};
 `;
-const TimeText = styled.span``;
+const TimeText = styled.span`
+  color: ${(props) => props.theme.bgColor};
+`;
 
 function Price({ coinId }: ChartProps) {
   const { isLoading, data } = useQuery<PriceData>(["tickers", coinId], () =>

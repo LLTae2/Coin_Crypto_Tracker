@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { fetchCoins } from "./api";
 import { Helmet } from "react-helmet";
 import { IconBaseProps } from "react-icons/lib";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.bgColor};
@@ -47,7 +49,7 @@ const Coin = styled.li`
   }
 `;
 const Title = styled.h1`
-  color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 40px;
   padding: 0px 20px;
 `;
@@ -56,6 +58,7 @@ const Loading = styled.span`
   text-align: center;
   font-size: 30px;
 `;
+
 interface CoinInterface {
   id: string;
   name: string;
@@ -75,20 +78,6 @@ const Img = styled.img`
 
 const Coins = ({}: ICoinsProps) => {
   const { isLoading, data } = useQuery<CoinInterface[]>("allCoins", fetchCoins);
-  // const [coins, setCoins] = useState<CoinInterface[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   axios
-  //     .get("https://api.coinpaprika.com/v1/coins")
-  //     .then((res) => {
-  //       setCoins(res.data.slice(0, 100));
-  //       // console.log(res.data.slice(0, 100));
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
   return (
     <Container>
       <Helmet>

@@ -15,6 +15,8 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { Helmet } from "react-helmet";
 import { AiFillHome } from "react-icons/ai";
+import { isDarkAtom } from "../atom";
+import { useRecoilValue } from "recoil";
 
 interface Params {
   coinId: string;
@@ -32,7 +34,7 @@ const Header = styled.header`
   position: relative;
 `;
 const Title = styled.h1`
-  color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.textColor};
   font-size: 40px;
   padding: 0px 20px;
 `;
@@ -47,7 +49,8 @@ const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  background-color: ${(props) => props.theme.textColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -55,6 +58,7 @@ const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: ${(props) => props.theme.bgColor};
   span:first-child {
     font-size: 10px;
     font-weight: 400;
@@ -66,6 +70,7 @@ const Description = styled.p`
   margin: 20px 0px;
   width: 450px;
   text-align: center;
+  color: ${(props) => props.theme.textColor};
 `;
 const ContentBox = styled.div`
   width: 450px;
@@ -74,6 +79,7 @@ const ContentBox = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  color: ${(props) => props.theme.bgColor};
 `;
 const Tabs = styled.div`
   width: 490px;
@@ -89,7 +95,8 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  background-color: ${(props) => props.theme.textColor};
   padding: 7px 0px;
   border-radius: 10px;
 
@@ -97,12 +104,19 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
     text-decoration: none;
     color: ${(props) =>
-      props.isActive ? props.theme.accentColor : props.theme.textColor};
+      props.isActive ? props.theme.accentColor : props.theme.bgColor};
   }
 `;
 const HomeIcon = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.theme.textColor};
   position: absolute;
-  top: 40%;
+  top: 130%;
   left: 3%;
 `;
 
@@ -174,6 +188,7 @@ interface PriceData {
 }
 
 const Coin = () => {
+  const isDark = useRecoilValue(isDarkAtom);
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { coinId } = useParams<Params>(); // url에서 가져오는거
@@ -224,7 +239,7 @@ const Coin = () => {
       <Header>
         <HomeIcon>
           <Link to={"/"}>
-            <AiFillHome color="white" size={30} />
+            <AiFillHome color={isDark ? "black" : "white"} size={30} />
           </Link>
         </HomeIcon>
         <Title>
