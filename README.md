@@ -1,8 +1,6 @@
-# Getting Started with Create React App
+# Coin_Crypto_Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
+##  https://lltae2.github.io/Coin_Crypto_Tracker/
 
 In the project directory, you can run:
 
